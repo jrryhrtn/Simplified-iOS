@@ -43,10 +43,6 @@
 
 @property (nonatomic) UITapGestureRecognizer *tapGestureRecognizer, *doubleTapGestureRecognizer;
 
-// TESTING
-
-@property (atomic) BOOL testFailedCompletion;
-
 @end
 
 @implementation NYPLReaderViewController
@@ -358,7 +354,7 @@ didEncounterCorruptionForBook:(__attribute__((unused)) NYPLBook *)book
   
   rendererInFront = self.pageViewController.viewControllers[0].view.subviews.count < 2;
   
-  NSString *const message = [NSString stringWithFormat:@"Data Integrity %@\nServer %@\nRenderer Superview %@\nInteraction %@\nRenderer Bounds %@\nWKWebView Superview %@\nContent Size %@\nRenderer In Tree %@\nRendered Image %@\nValid Current View %@\nResolved Location %@\nAnimation Completed %@\nAlpha %@\nActive %@\nJS Idle %@\nJS Queue Empty %@\nRenderer In Frame %@\nRenderer In Front %@",
+  NSString *const message = [NSString stringWithFormat:@"Data Integrity %@\nServer %@\nRenderer Superview %@\nInteraction %@\nRenderer Bounds %@\nWKWebView Superview %@\nContent Size %@\nRenderer In Tree %@\nRendered Image %@\nValid Current View %@\nResolved Location %@\nAlpha %@\nActive %@\nJS Idle %@\nJS Queue Empty %@\nRenderer In Frame %@\nRenderer In Front %@",
                              !((NYPLReaderReadiumView *)self.rendererView).bookIsCorrupt ? @"✓" : @"✗",
                              ((NYPLReaderReadiumView *)self.rendererView).resultServerResponding ? @"✓" : @"✗",
                              self.rendererView.superview ? @"✓" : @"✗",
@@ -371,7 +367,6 @@ didEncounterCorruptionForBook:(__attribute__((unused)) NYPLBook *)book
                              self.renderedImageView ? @"✓" : @"✗",
                              [[NYPLReaderSettings sharedSettings] currentReaderReadiumView] == self.rendererView ? @"✓" : @"✗",
                              !((NYPLReaderReadiumView *) self.rendererView).isPageTurning ? @"✓" : @"✗",
-                             !self.testFailedCompletion ? @"✓" : @"✗",
                              !!((WKWebView *) self.rendererView.subviews[0]).alpha ? @"✓" : @"✗",
                              !((NYPLReaderReadiumView *)self.rendererView).performingLongLoad ? @"✓" : @"✗",
                              !((NYPLReaderReadiumView *)self.rendererView).javaScriptIsRunning ? @"✓" : @"✗",
@@ -703,7 +698,6 @@ spineItemTitle:(NSString *const)title
     [self turnPageIsRight:!self.previousPageTurnWasRight];
     [[NYPLReaderSettings sharedSettings].currentReaderReadiumView removeFromSuperview];
     [pageViewController.viewControllers.firstObject.view insertSubview:[NYPLReaderSettings sharedSettings].currentReaderReadiumView belowSubview:self.renderedImageView];
-    self.testFailedCompletion = YES;
   }
 }
 
