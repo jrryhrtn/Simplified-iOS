@@ -10,7 +10,10 @@
 
 // TESTING
 
+@property (nonatomic) BOOL javaScriptIsRunning;
 @property (atomic) BOOL resultServerResponding;
+@property (nonatomic) BOOL performingLongLoad;
+@property (nonatomic) NSMutableArray *javaScriptHandlerQueue;
 
 - (id)init NS_UNAVAILABLE;
 - (id)initWithCoder:(NSCoder *)aDecoder NS_UNAVAILABLE;

@@ -42,6 +42,11 @@
 @property (nonatomic, getter = isStatusBarHidden) BOOL statusBarHidden;
 
 @property (nonatomic) UITapGestureRecognizer *tapGestureRecognizer, *doubleTapGestureRecognizer;
+
+// TESTING
+
+@property (atomic) BOOL testFailedCompletion;
+
 @end
 
 @implementation NYPLReaderViewController
@@ -327,10 +332,53 @@ didEncounterCorruptionForBook:(__attribute__((unused)) NYPLBook *)book
   [self prepareBottomView];
 }
 
+- (BOOL)rendererInView:(UIView *const)view
+{
+  if(self.rendererView.superview == view) {
+    return YES;
+  } else {
+    for(UIView *const subview in [view subviews]) {
+      if([self rendererInView:subview]) {
+        return YES;
+      }
+    }
+  }
+  
+  return NO;
+}
+
 - (void)didSelectCheck
 {
-  NSString *const message = [NSString stringWithFormat:@"Server %@",
-                             ((NYPLReaderReadiumView *)self.rendererView).resultServerResponding ? @"✓" : @"✗"];
+  BOOL rendererInFrame = NO;
+  BOOL rendererInFront = YES;
+  
+  if(self.pageViewController.viewControllers[0].view.subviews.count) {
+    rendererInFrame = self.pageViewController.viewControllers[0].view.subviews[0] == self.rendererView;
+  }
+  
+  rendererInFront = self.pageViewController.viewControllers[0].view.subviews.count < 2;
+  
+  NSString *const message = [NSString stringWithFormat:@"Data Integrity %@\nServer %@\nRenderer Superview %@\nInteraction %@\nRenderer Bounds %@\nWKWebView Superview %@\nContent Size %@\nRenderer In Tree %@\nRendered Image %@\nValid Current View %@\nResolved Location %@\nAnimation Completed %@\nAlpha %@\nActive %@\nJS Idle %@\nJS Queue Empty %@\nRenderer In Frame %@\nRenderer In Front %@",
+                             !((NYPLReaderReadiumView *)self.rendererView).bookIsCorrupt ? @"✓" : @"✗",
+                             ((NYPLReaderReadiumView *)self.rendererView).resultServerResponding ? @"✓" : @"✗",
+                             self.rendererView.superview ? @"✓" : @"✗",
+                             self.view.userInteractionEnabled ? @"✓" : @"✗",
+                             self.rendererView.bounds.size.width > 100 && self.rendererView.bounds.size.height > 100 ? @"✓" : @"✗",
+                             self.rendererView.subviews[0] ? @"✓" : @"✗",
+                             (((WKWebView *) self.rendererView.subviews[0]).scrollView.contentSize.width > 100
+                              && ((WKWebView *) self.rendererView.subviews[0]).scrollView.contentSize.height > 100) ? @"✓" : @"✗",
+                             [self rendererInView:self.view] ? @"✓" : @"✗",
+                             self.renderedImageView ? @"✓" : @"✗",
+                             [[NYPLReaderSettings sharedSettings] currentReaderReadiumView] == self.rendererView ? @"✓" : @"✗",
+                             !((NYPLReaderReadiumView *) self.rendererView).isPageTurning ? @"✓" : @"✗",
+                             !self.testFailedCompletion ? @"✓" : @"✗",
+                             !!((WKWebView *) self.rendererView.subviews[0]).alpha ? @"✓" : @"✗",
+                             !((NYPLReaderReadiumView *)self.rendererView).performingLongLoad ? @"✓" : @"✗",
+                             !((NYPLReaderReadiumView *)self.rendererView).javaScriptIsRunning ? @"✓" : @"✗",
+                             !((NYPLReaderReadiumView *)self.rendererView).javaScriptHandlerQueue.count ? @"✓" : @"✗",
+                             rendererInFrame ? @"✓" : @"✗",
+                             rendererInFront ? @"✓" : @"✗"];
+  
   
   UIAlertController *const alertController = [UIAlertController
                                               alertControllerWithTitle:@"Status Report"
@@ -655,6 +703,7 @@ spineItemTitle:(NSString *const)title
     [self turnPageIsRight:!self.previousPageTurnWasRight];
     [[NYPLReaderSettings sharedSettings].currentReaderReadiumView removeFromSuperview];
     [pageViewController.viewControllers.firstObject.view insertSubview:[NYPLReaderSettings sharedSettings].currentReaderReadiumView belowSubview:self.renderedImageView];
+    self.testFailedCompletion = YES;
   }
 }
 

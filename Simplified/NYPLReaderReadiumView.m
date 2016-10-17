@@ -41,11 +41,8 @@
 @property (nonatomic) float progressWithinBook; // [0, 1]
 @property (nonatomic) NSDictionary *spineItemDetails;
 
-@property (nonatomic) BOOL javaScriptIsRunning;
-@property (nonatomic) NSMutableArray *javaScriptHandlerQueue;
 @property (nonatomic) NSMutableArray *javaScriptStringQueue;
 
-@property (nonatomic) BOOL performingLongLoad;
 @property (nonatomic) double secondsSinceComplete;
 
 // TESTING
