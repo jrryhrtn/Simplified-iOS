@@ -251,11 +251,22 @@ didEncounterCorruptionForBook:(__attribute__((unused)) NYPLBook *)book
                 action:@selector(didSelectTOC)
       forControlEvents:UIControlEventTouchUpInside];
   
+  NYPLRoundedButton *const checkButton = [NYPLRoundedButton button];
+  checkButton.accessibilityLabel = NSLocalizedString(@"Status", nil);
+  [checkButton setTitle:@"?" forState:UIControlStateNormal];
+  [checkButton sizeToFit];
+  // We set a larger font after sizing because we want large text in a standard-size button.
+  checkButton.titleLabel.font = [UIFont fontWithName:@"HelveticaNeue-Light" size:18];
+  [checkButton addTarget:self
+                  action:@selector(didSelectCheck)
+        forControlEvents:UIControlEventTouchUpInside];
+  UIBarButtonItem *const checkButtonItem = [[UIBarButtonItem alloc] initWithCustomView:checkButton];
+  
   UIBarButtonItem *const TOCBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:TOCButton];
   
   // Corruption may have occurred before we added these, so we need to set their enabled status
   // here (in addition to |readerView:didEncounterCorruptionForBook:|).
-  self.navigationItem.rightBarButtonItems = @[TOCBarButtonItem, self.settingsBarButtonItem];
+  self.navigationItem.rightBarButtonItems = @[TOCBarButtonItem, self.settingsBarButtonItem, checkButtonItem];
   if(self.rendererView.bookIsCorrupt) {
     for(UIBarButtonItem *const item in self.navigationItem.rightBarButtonItems) {
       item.enabled = NO;
@@ -314,6 +325,21 @@ didEncounterCorruptionForBook:(__attribute__((unused)) NYPLBook *)book
   [self.view bringSubviewToFront:self.activityIndicatorView];
   
   [self prepareBottomView];
+}
+
+- (void)didSelectCheck
+{
+  NSString *const message = [NSString stringWithFormat:@"Server %@",
+                             ((NYPLReaderReadiumView *)self.rendererView).resultServerResponding ? @"✓" : @"✗"];
+  
+  UIAlertController *const alertController = [UIAlertController
+                                              alertControllerWithTitle:@"Status Report"
+                                              message:message
+                                              preferredStyle:UIAlertControllerStyleAlert];
+  
+  [alertController addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil]];
+  
+  [self presentViewController:alertController animated:YES completion:nil];
 }
 
 -(void)didMoveToParentViewController:(UIViewController *)parent {

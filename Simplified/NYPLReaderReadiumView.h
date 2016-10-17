@@ -8,6 +8,10 @@
 @property (nonatomic, readonly) BOOL isPageTurning;
 @property (nonatomic, readonly) BOOL canGoRight, canGoLeft;
 
+// TESTING
+
+@property (atomic) BOOL resultServerResponding;
+
 - (id)init NS_UNAVAILABLE;
 - (id)initWithCoder:(NSCoder *)aDecoder NS_UNAVAILABLE;
 - (id)initWithFrame:(CGRect)frame NS_UNAVAILABLE;

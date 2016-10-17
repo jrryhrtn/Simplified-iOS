@@ -48,6 +48,12 @@
 @property (nonatomic) BOOL performingLongLoad;
 @property (nonatomic) double secondsSinceComplete;
 
+// TESTING
+
+@property (atomic) NSTimer *testTimer;
+@property (atomic) NSURLSession *testSession;
+@property (atomic) NSUInteger testResponseTicks;
+
 @end
 
 static NSString *const renderer = @"readium";
@@ -175,7 +181,32 @@ static void removeCalloutBarFromSuperviewStartingFromView(UIView *const view)
   self.javaScriptHandlerQueue = [NSMutableArray array];
   self.javaScriptStringQueue = [NSMutableArray array];
   
+  self.testSession = [NSURLSession sessionWithConfiguration:
+                      [NSURLSessionConfiguration ephemeralSessionConfiguration]];
+  self.testTimer = [NSTimer
+                    scheduledTimerWithTimeInterval:0.1
+                    target:self
+                    selector:@selector(test)
+                    userInfo:nil
+                    repeats:YES];
+  
   return self;
+}
+
+- (void)test
+{
+  [[self.testSession
+    dataTaskWithURL:[NSURL URLWithString:@"http://127.0.0.1:%d/simplified-readium/reader.html"]
+    completionHandler:^(__unused NSData * _Nullable data,
+                        __unused NSURLResponse * _Nullable response,
+                        __unused NSError * _Nullable error) {
+      self.testResponseTicks = 0;
+    }]
+   resume];
+  
+  self.resultServerResponding = self.testResponseTicks < 3;
+  
+  ++self.testResponseTicks;
 }
 
 - (void)addObservers
