@@ -30,4 +30,8 @@
 - (void) openPageRight;
 - (BOOL) touchIntersectsLink:(UITouch *)touch;
 
+// TESTING
+
+- (void)readiumInitialize;
+
 @end

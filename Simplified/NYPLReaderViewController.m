@@ -263,11 +263,22 @@ didEncounterCorruptionForBook:(__attribute__((unused)) NYPLBook *)book
         forControlEvents:UIControlEventTouchUpInside];
   UIBarButtonItem *const checkButtonItem = [[UIBarButtonItem alloc] initWithCustomView:checkButton];
   
+  NYPLRoundedButton *const fixButton = [NYPLRoundedButton button];
+  fixButton.accessibilityLabel = NSLocalizedString(@"Fix", nil);
+  [fixButton setTitle:NSLocalizedString(@"Fix", nil) forState:UIControlStateNormal];
+  [fixButton sizeToFit];
+  // We set a larger font after sizing because we want large text in a standard-size button.
+  fixButton.titleLabel.font = [UIFont fontWithName:@"HelveticaNeue-Light" size:18];
+  [fixButton addTarget:self
+                action:@selector(didSelectFix)
+      forControlEvents:UIControlEventTouchUpInside];
+  UIBarButtonItem *const fixButtonItem = [[UIBarButtonItem alloc] initWithCustomView:fixButton];
+  
   UIBarButtonItem *const TOCBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:TOCButton];
   
   // Corruption may have occurred before we added these, so we need to set their enabled status
   // here (in addition to |readerView:didEncounterCorruptionForBook:|).
-  self.navigationItem.rightBarButtonItems = @[TOCBarButtonItem, self.settingsBarButtonItem, checkButtonItem];
+  self.navigationItem.rightBarButtonItems = @[TOCBarButtonItem, self.settingsBarButtonItem, checkButtonItem, fixButtonItem];
   if(self.rendererView.bookIsCorrupt) {
     for(UIBarButtonItem *const item in self.navigationItem.rightBarButtonItems) {
       item.enabled = NO;
@@ -383,6 +394,19 @@ didEncounterCorruptionForBook:(__attribute__((unused)) NYPLBook *)book
   [alertController addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil]];
   
   [self presentViewController:alertController animated:YES completion:nil];
+}
+
+- (void)didSelectFix
+{
+  [self.rendererView performSelector:@selector(willResignActive)];
+  
+  dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.25 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+    [self.rendererView performSelector:@selector(willEnterForeground)];
+  });
+  
+  dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+    [((NYPLReaderReadiumView *)self.rendererView) readiumInitialize];
+  });
 }
 
 -(void)didMoveToParentViewController:(UIViewController *)parent {
