@@ -4,10 +4,13 @@ xcodeproj 'Simplified.xcodeproj'
 platform :ios, '8.0'
 
 target 'SimplyE' do
-  use_frameworks!
-  pod 'HelpStack'
-  pod 'Bugsnag', :git => "https://github.com/bugsnag/bugsnag-cocoa.git"
-  pod "NYPLCardCreator", :git => "https://github.com/NYPL-Simplified/CardCreator-iOS.git"
+	pod 'HelpStack'
+	pod 'Bugsnag', :git => "https://github.com/bugsnag/bugsnag-cocoa.git"
+	pod 'CHRTextFieldFormatter'
+
+use_frameworks!
+  pod 'Alamofire'
+
 end
 
 target 'SimplyETests' do
