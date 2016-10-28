@@ -237,6 +237,11 @@
 		032A310E1DC02EC00001E4AF /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Localizable.strings; sourceTree = "<group>"; };
 		0345BFD61DBF002E00398B6F /* APIKeys.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIKeys.swift; sourceTree = "<group>"; };
 		0345BFDC1DBF00C800398B6F /* NNYPLAnnotations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NNYPLAnnotations.swift; sourceTree = "<group>"; };
+		03CE44AF1DC2C5900043140F /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
+		03CE44B41DC2C5B40043140F /* ro */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ro; path = ro.lproj/Localizable.strings; sourceTree = "<group>"; };
+		03CE44B51DC2C5C20043140F /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		03CE44B61DC2C5CB0043140F /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pl; path = pl.lproj/Localizable.strings; sourceTree = "<group>"; };
+		03E764861DC28FD600A045C9 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
 		080ADCBE1C04C26100C0575F /* libCHRTextFieldFormatter.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libCHRTextFieldFormatter.a; path = "Pods/../build/Debug-iphoneos/libCHRTextFieldFormatter.a"; sourceTree = "<group>"; };
 		08136F7D1BC2AB06002A4486 /* LibraryCard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LibraryCard.storyboard; sourceTree = "<group>"; };
 		0813870C1BC2E8A9003DEA6A /* NYPLDateCardController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NYPLDateCardController.h; sourceTree = "<group>"; };
@@ -1245,6 +1250,10 @@
 				it,
 				de,
 				es,
+				ru,
+				ro,
+				"zh-Hant",
+				pl,
 			);
 			mainGroup = A823D804192BABA400B55DE2;
 			productRefGroup = A823D80E192BABA400B55DE2 /* Products */;
@@ -1614,6 +1623,11 @@
 				032A310C1DC02EAD0001E4AF /* it */,
 				032A310D1DC02EB30001E4AF /* de */,
 				032A310E1DC02EC00001E4AF /* es */,
+				03E764861DC28FD600A045C9 /* ru */,
+				03CE44AF1DC2C5900043140F /* fr */,
+				03CE44B41DC2C5B40043140F /* ro */,
+				03CE44B51DC2C5C20043140F /* zh-Hant */,
+				03CE44B61DC2C5CB0043140F /* pl */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
